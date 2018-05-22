@@ -106,13 +106,13 @@ class AcquirerAlipay(models.Model):
         biz_content['subject'] = '%s: %s' % (self.company_id.name, values['reference'])
         biz_content['body'] = '%s: %s' % (self.company_id.name, values['reference'])
 
-        biz_content_sign = func.rsaSign(json.dumps(biz_content),open('/rsa_private_key.pem','r',encoding='utf-8').read())
+        biz_content_sign = func.rsaSign(json.dumps(biz_content),open('rsa_private_key.pem','r',encoding='utf-8').read())
 
         alipay_tx_values.update({'biz_content':biz_content_sign})
         
         subkey = ['app_id','method','version','charset','sign_type','timestamp','biz_content','return_url','notify_url']
         need_sign = {key:alipay_tx_values[key] for key in subkey}
-        params,sign = func.buildRequestMysign(need_sign, open('/rsa_private_key.pem','r',encoding='utf-8').read())
+        params,sign = func.buildRequestMysign(need_sign, open('rsa_private_key.pem','r',encoding='utf-8').read())
         alipay_tx_values.update({
             'sign':sign,
             })
