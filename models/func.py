@@ -56,7 +56,7 @@ def params_filter(params):
         k = smart_str(k)  
         if k not in ('sign','') and v != '':  
             newparams[k] = smart_str(v)  
-            prestr += '%s=%s&' % (k.encode('utf8'), newparams[k])  
+            prestr += '%s=%s&' % (k.decode('utf8'), newparams[k])  
     prestr = prestr[:-1]  
     return newparams, prestr
 
