@@ -106,7 +106,7 @@ class AcquirerAlipay(models.Model):
         biz_content['subject'] = '%s: %s' % (self.company_id.name, values['reference'])
         biz_content['body'] = '%s: %s' % (self.company_id.name, values['reference'])
 
-        biz_content_sign = func.rsaSign(json.dumps(biz_content),open('rsa_private_key.pem','r',encoding='utf-8').read())
+        biz_content_sign = func.rsaSign(json.dumps(biz_content),self.alipay_private_key)
 
         alipay_tx_values.update({'biz_content':biz_content_sign})
         
