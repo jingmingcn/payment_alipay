@@ -129,6 +129,6 @@ def rsaVerify(data,public_key,sign):
 def aesEncrypt(data,aes_key):
     IV = 16 * '\x00'
     mode = AES.MODE_CBC
-    encryptor = AES.new(aes_key,mode,IV=IV)
+    encryptor = AES.new(b64decode(aes_key),mode,IV=IV)
     cipher = encryptor.encrypt(data)
     return cipher
