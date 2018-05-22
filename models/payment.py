@@ -28,7 +28,7 @@ class AcquirerAlipay(models.Model):
     provider = fields.Selection(selection_add=[('alipay', 'Alipay')])
     
     alipay_app_id = fields.Char('Alipay APP ID',groups='base.group_user')
-    #alipay_private_key = fields.Text('Alipay Private KEY',groups='base.group_user')
+    alipay_private_key = fields.Text('Alipay Private KEY',groups='base.group_user')
     #alipay_public_key = fields.Text('Alipay Public key',groups='base.group_user')
     #alipay_sign_type = fields.Selection([('RSA','RSA'),('RSA2','RSA2')],groups='base.gruop_user')
     alipay_transport = fields.Selection([
@@ -112,7 +112,7 @@ class AcquirerAlipay(models.Model):
         
         subkey = ['app_id','method','version','charset','sign_type','timestamp','biz_content','return_url','notify_url']
         need_sign = {key:alipay_tx_values[key] for key in subkey}
-        params,sign = func.buildRequestMysign(need_sign, open('rsa_private_key.pem','r',encoding='utf-8').read())
+        params,sign = func.buildRequestMysign(need_sign, self.alipay_private_key)
         alipay_tx_values.update({
             'sign':sign,
             })
