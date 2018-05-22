@@ -2,6 +2,8 @@
 
 import json
 import logging
+import datetime
+import time
 from urllib.parse import urlparse
 from urllib.parse import urljoin
 from . import func
@@ -24,24 +26,22 @@ class AcquirerAlipay(models.Model):
 
     provider = fields.Selection(selection_add=[('alipay', 'Alipay')])
     
-    alipay_partner = fields.Char('Alipay Partner ID',required_if_provider="alipay",groups='base.group_user')
-    alipay_seller_id = fields.Char('Alipay Seller ID',groups='base.group_user')
+    """alipay_partner = fields.Char('Alipay Partner ID',required_if_provider="alipay",groups='base.group_user')"""
+    alipay_app_id = fields.Char('Alipay APP ID',groups='base.group_user')
     alipay_private_key = fields.Text('Alipay Private KEY',groups='base.group_user')
     alipay_public_key = fields.Text('Alipay Public key',groups='base.group_user')
-    alipay_sign_type = fields.Char('Sign Type',default = 'RSA',groups='base.gruop_user')
+    alipay_sign_type = fields.Char('Sign Type',default = 'RSA2',groups='base.gruop_user')
     alipay_transport = fields.Selection([
         ('https','HTTPS'),
         ('http','HTTP')],groups='base.group_user')
-    alipay_service = fields.Char('Service',required_if_provider="alipay",groups='base.group_user',default='create_direct_pay_by_user')
-    alipay_payment_type = fields.Char('Payment Type',groups='base.group_user',default = '1')
-
+    
 
     @api.model
     def _get_alipay_urls(self, environment):
         """ Alipay URLS """
         if environment == 'prod':
             return {
-                'alipay_form_url': 'https://mapi.alipay.com/gateway.do?',
+                'alipay_form_url': 'https://openapi.alipay.com/gateway.do?',
             }
         else:
             return {
@@ -77,28 +77,45 @@ class AcquirerAlipay(models.Model):
         alipay_tx_values = dict(values)
         alipay_tx_values.update({
             #basic parameters
-            'service': self.alipay_service,
-            'partner': self.alipay_partner,
-            '_input_charset': 'utf-8',
+            'method': 'alipay.trade.page.pay',
+            #'partner': self.alipay_partner,
+            'charset': 'utf-8',
             'sign_type': self.alipay_sign_type,
             'return_url': '%s' % urljoin(base_url, AlipayController._return_url),
             'notify_url': '%s' % urljoin(base_url, AlipayController._notify_url),
             #buiness parameters
-            'out_trade_no': values['reference'],
-            'subject': '%s: %s' % (self.company_id.name, values['reference']),
-            'payment_type': '1',
-            'total_fee': values['amount'],
-            'seller_id': self.alipay_seller_id,
-            'seller_email': self.alipay_seller_id,
-            'seller_account_name': self.alipay_seller_id,
-            'body':'',
+            #'out_trade_no': values['reference'],
+            #'subject': '%s: %s' % (self.company_id.name, values['reference']),
+            #'total_amount': values['amount'],
+            'app_id': self.alipay_app_id,
+            #'seller_email': self.alipay_app_id,
+            #'seller_account_name': self.alipay_app_id,
+            #'body':'',
+            #'product_code':'FAST_INSTANT_TRADE_PAY',
+            'version':'1.0',
+            'timestamp': datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
+            'biz_content':''
         })
-        subkey = ['service','partner','_input_charset','return_url','notify_url','out_trade_no','subject','payment_type','total_fee','seller_id','body']
+
+        biz_content = {}
+        biz_content['out_trade_no'] = values['reference']
+        biz_content['product_code'] = 'FAST_INSTANT_TRADE_PAY'
+        biz_content['total_amount'] = values['amount']
+        biz_content['subject'] = '%s: %s' % (self.company_id.name, values['reference'])
+        biz_content['body'] = '%s: %s' % (self.company_id.name, values['reference'])
+
+        biz_content_sign = func.rsaSign(json.dumps(biz_content),open('/rsa_private_key.pem','r',encoding='utf-8').read())
+
+        alipay_tx_values.update({'biz_content':biz_content_sign})
+        
+        subkey = ['app_id','method','version','charset','sign_type','timestamp','biz_content','return_url','notify_url']
         need_sign = {key:alipay_tx_values[key] for key in subkey}
-        params,sign = func.buildRequestMysign(need_sign,open('/rsa_private_key.pem','r',encoding='utf-8').read())
+        params,sign = func.buildRequestMysign(need_sign, open('/rsa_private_key.pem','r',encoding='utf-8').read())
         alipay_tx_values.update({
             'sign':sign,
             })
+
+        #_logger.info('script_dir : %s' %(os.path.dirname(__file__)))
         return alipay_tx_values
 
     @api.multi
