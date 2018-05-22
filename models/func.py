@@ -51,7 +51,7 @@ def params_filter(params):
     for k in ks:  
         v = params[k]  
         k = smart_str(k)  
-        if k not in ('sign') and v != '':  
+        if k not in ('sign','') and v != '':  
             newparams[k] = smart_str(v)  
             prestr += '%s=%s&' % (k, newparams[k])  
     prestr = prestr[:-1]  
