@@ -106,7 +106,7 @@ def rsaSign(data,private_key):
 def buildRequestMysign(values,private_key):
     #把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
     params,prestr = params_filter(values)
-    _logger.info('Sign Str : %s' %s(prestr))
+    _logger.info('Sign Str : %s' %(prestr))
     mysign = rsaSign(prestr,private_key) or ''
     return params,mysign
 
