@@ -128,8 +128,13 @@ def rsaVerify(data,public_key,sign):
     return verifier.verify(res,b64decode(sign))
 
 def aesEncrypt(data,key):
+    bs = 16
     IV = 16 * '\x00'
     mode = AES.MODE_CBC
     aes_key = hashlib.sha256(key.encode()).digest()
     cipher = AES.new(aes_key,mode,IV=IV)
-    return b64encode(IV + cipher.encrypt(data)).decode('utf-8')
+    return b64encode(IV + cipher.encrypt(_pad(data,bs))).decode('utf-8')
+
+def _pad(self, s):
+    return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)
+
