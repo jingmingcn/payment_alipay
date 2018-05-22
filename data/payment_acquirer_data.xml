@@ -15,6 +15,7 @@
             <field name="alipay_app_id"></field>
             <field name="alipay_private_key"></field>
             <field name="alipay_public_key"></field>
+            <field name="alipay_sign_type"></field>
         </record>
 
     </data>
