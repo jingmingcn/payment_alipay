@@ -98,6 +98,7 @@ class AcquirerAlipay(models.Model):
         })
 
         _logger.info('timestamp :%s' %(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')) )
+        _logger.info('Alipay Private Key : %s'%(self.alipay_private_key))
 
         biz_content = {}
         biz_content['out_trade_no'] = values['reference']
