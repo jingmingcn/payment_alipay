@@ -28,9 +28,9 @@ class AcquirerAlipay(models.Model):
     provider = fields.Selection(selection_add=[('alipay', 'Alipay')])
     
     alipay_app_id = fields.Char('Alipay APP ID',groups='base.group_user')
-    alipay_private_key = fields.Text('Alipay Private KEY',groups='base.group_user')
-    alipay_public_key = fields.Text('Alipay Public key',groups='base.group_user')
-    alipay_sign_type = fields.Selection([('RSA','RSA'),('RSA2','RSA2')],groups='base.gruop_user')
+    #alipay_private_key = fields.Text('Alipay Private KEY',groups='base.group_user')
+    #alipay_public_key = fields.Text('Alipay Public key',groups='base.group_user')
+    #alipay_sign_type = fields.Selection([('RSA','RSA'),('RSA2','RSA2')],groups='base.gruop_user')
     alipay_transport = fields.Selection([
         ('https','HTTPS'),
         ('http','HTTP')],groups='base.group_user')
@@ -80,7 +80,7 @@ class AcquirerAlipay(models.Model):
             'method': 'alipay.trade.page.pay',
             #'partner': self.alipay_partner,
             'charset': 'utf-8',
-            'sign_type': self.alipay_sign_type,
+            'sign_type': 'RSA2',
             'return_url': '%s' % urljoin(base_url, AlipayController._return_url),
             'notify_url': '%s' % urljoin(base_url, AlipayController._notify_url),
             #buiness parameters
@@ -97,6 +97,8 @@ class AcquirerAlipay(models.Model):
             'biz_content':''
         })
 
+        _logger.info('timestamp :%s' %(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')) )
+
         biz_content = {}
         biz_content['out_trade_no'] = values['reference']
         biz_content['product_code'] = 'FAST_INSTANT_TRADE_PAY'
@@ -106,13 +108,13 @@ class AcquirerAlipay(models.Model):
 
         _logger.info('alipay_private_key : %s' %(self.alipay_private_key))
 
-        biz_content_sign = func.rsaSign(json.dumps(biz_content),self.alipay_private_key)
+        biz_content_sign = func.rsaSign(json.dumps(biz_content),open('/rsa_private_key.pem','r',encoding='utf-8').read())
 
         alipay_tx_values.update({'biz_content':biz_content_sign})
         
         subkey = ['app_id','method','version','charset','sign_type','timestamp','biz_content','return_url','notify_url']
         need_sign = {key:alipay_tx_values[key] for key in subkey}
-        params,sign = func.buildRequestMysign(need_sign, self.alipay_private_key)
+        params,sign = func.buildRequestMysign(need_sign, open('/rsa_private_key.pem','r',encoding='utf-8').read())
         alipay_tx_values.update({
             'sign':sign,
             })
