@@ -93,8 +93,8 @@ def createLinkstringUrlencode(values):
 """
 def rsaSign(data,private_key):
     key = RSA.importKey(private_key)
-    _logger.info('Data Encode : %s '%(data.encode('utf-8')))
-    hash_obj = SHA256.new(data.encode('utf-8'))
+    _logger.info('Data Encode : %s '%(data.decode('utf-8')))
+    hash_obj = SHA256.new(data.decode('utf-8'))
     signer = PKCS1_v1_5.new(key)
     d = b64encode(signer.sign(hash_obj))
     return d
