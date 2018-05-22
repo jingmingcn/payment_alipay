@@ -26,11 +26,10 @@ class AcquirerAlipay(models.Model):
 
     provider = fields.Selection(selection_add=[('alipay', 'Alipay')])
     
-    """alipay_partner = fields.Char('Alipay Partner ID',required_if_provider="alipay",groups='base.group_user')"""
     alipay_app_id = fields.Char('Alipay APP ID',groups='base.group_user')
     alipay_private_key = fields.Text('Alipay Private KEY',groups='base.group_user')
     alipay_public_key = fields.Text('Alipay Public key',groups='base.group_user')
-    alipay_sign_type = fields.Char('Alipay Sign Type',default = 'RSA2',groups='base.gruop_user')
+    alipay_sign_type = fields.Char('Alipay Sign Type',groups='base.gruop_user')
     alipay_transport = fields.Selection([
         ('https','HTTPS'),
         ('http','HTTP')],groups='base.group_user')
@@ -93,7 +92,7 @@ class AcquirerAlipay(models.Model):
             #'body':'',
             #'product_code':'FAST_INSTANT_TRADE_PAY',
             'version':'1.0',
-            'timestamp': datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
+            'timestamp': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             'biz_content':''
         })
 
