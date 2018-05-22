@@ -16,6 +16,7 @@ try:
     from Crypto.PublicKey import RSA
     from Crypto.Signature import PKCS1_v1_5
     from Crypto.Hash import SHA256
+    from Crypto.Cipher import AES
 except:
     pass
 
@@ -125,3 +126,9 @@ def rsaVerify(data,public_key,sign):
     verifier = PKCS1_v1_5.new(rsakey)
     return verifier.verify(res,b64decode(sign))
 
+def aesEncrypt(data,aes_key):
+    IV = 16 * '\x00'
+    mode = AES.MODE_CBC
+    encryptor = AES.new(aes_key,mode,IV=IV)
+    cipher = encryptor.encrypt(data)
+    return cipher
