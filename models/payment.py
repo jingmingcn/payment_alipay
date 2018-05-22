@@ -107,6 +107,7 @@ class AcquirerAlipay(models.Model):
         #biz_content['body'] = '%s: %s' % (self.company_id.name, values['reference'])
 
         _logger.info('biz_content : %s'%(json.dumps(biz_content)))
+        _logger.info('alipay_public_key : %s'%(self.alipay_public_key))
         biz_content_sign = func.rsaSign(json.dumps(biz_content),self.alipay_public_key)
 
         alipay_tx_values.update({'biz_content':biz_content_sign.decode('utf-8')})
