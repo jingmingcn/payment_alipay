@@ -53,11 +53,11 @@ def params_filter(params):
     prestr = "" 
     for k in ks:  
         v = params[k]  
-        k = smart_str(k)  
+        k = str(smart_str(k))
         if k not in ('sign','') and v != '':  
-            newparams[k] = smart_str(v)  
+            newparams[k] = str(smart_str(v))  
             prestr += k + "=" + newparams[k] + "&"
-    prestr = prestr[:-1]  
+    prestr = prestr[:-1]
     return newparams, prestr
 
 """
