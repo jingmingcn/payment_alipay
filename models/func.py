@@ -50,7 +50,7 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
 def params_filter(params):  
     ks = sorted(params)
     newparams = {}  
-    prestr = ''  
+    prestr = "" 
     for k in ks:  
         v = params[k]  
         k = smart_str(k)  
