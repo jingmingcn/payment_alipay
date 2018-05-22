@@ -97,21 +97,17 @@ class AcquirerAlipay(models.Model):
             'biz_content':''
         })
 
-        _logger.info('timestamp :%s' %(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')) )
-        _logger.info('Alipay Private Key : %s'%(self.alipay_private_key))
-
         biz_content = {}
         biz_content['out_trade_no'] = values['reference']
         biz_content['product_code'] = 'FAST_INSTANT_TRADE_PAY'
-        biz_content['total_amount'] = values['amount']
+        #biz_content['total_amount'] = values['amount']
+        biz_content['total_amount'] = 100.00
         biz_content['subject'] = 'Ticket'
         #biz_content['subject'] = '%s: %s' % (self.company_id.name, values['reference'])
         #biz_content['body'] = '%s: %s' % (self.company_id.name, values['reference'])
 
         _logger.info('biz_content : %s'%(json.dumps(biz_content)))
         biz_content_sign = func.rsaSign(json.dumps(biz_content),self.alipay_private_key)
-        _logger.info('%s'%(biz_content_sign))
-        _logger.info('%s'%(biz_content_sign.decode('utf-8')))
 
         alipay_tx_values.update({'biz_content':biz_content_sign.decode('utf-8')})
         
