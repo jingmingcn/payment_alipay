@@ -11,6 +11,7 @@ import json
 import sys
 import types
 import logging
+import hashlib
 
 try:
     from Crypto.PublicKey import RSA
@@ -126,9 +127,10 @@ def rsaVerify(data,public_key,sign):
     verifier = PKCS1_v1_5.new(rsakey)
     return verifier.verify(res,b64decode(sign))
 
-def aesEncrypt(data,aes_key):
+def aesEncrypt(data,key):
     IV = 16 * '\x00'
     mode = AES.MODE_CBC
-    encryptor = AES.new(b64decode(aes_key),mode,IV=IV)
+    aes_key = hashlib.sha256(key.encode()).digest()
+    encryptor = AES.new(aes_key,mode,IV=IV)
     cipher = encryptor.encrypt(data)
     return cipher
