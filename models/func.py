@@ -56,7 +56,7 @@ def params_filter(params):
         k = smart_str(k)  
         if k not in ('sign','') and v != '':  
             newparams[k] = smart_str(v)  
-            prestr += '%s=%s&' % (k.decode('utf-8'), newparams[k].decode('utf-8'))  
+            prestr += '%s=%s&' % (k, newparams[k])  
     prestr = prestr[:-1]  
     return newparams, prestr
 
@@ -93,6 +93,7 @@ def createLinkstringUrlencode(values):
 """
 def rsaSign(data,private_key):
     key = RSA.importKey(private_key)
+    _logger.info('Data Encode : %s '%(data.encode('utf-8')))
     hash_obj = SHA256.new(data.encode('utf-8'))
     signer = PKCS1_v1_5.new(key)
     d = b64encode(signer.sign(hash_obj))
