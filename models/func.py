@@ -10,6 +10,7 @@
 import json
 import sys
 import types
+import logging
 
 try:
     from Crypto.PublicKey import RSA
@@ -20,6 +21,8 @@ except:
 
 from base64 import b64encode,b64decode
 from urllib.parse import urlencode
+
+_logger = logging.getLogger(__name__)
 
 def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):  
     if strings_only and isinstance(s, (types.NoneType, int)):  
@@ -51,7 +54,7 @@ def params_filter(params):
     for k in ks:  
         v = params[k]  
         k = smart_str(k)  
-        if k not in ('sign','sign_type') and v != '':  
+        if k not in ('sign','') and v != '':  
             newparams[k] = smart_str(v)  
             prestr += '%s=%s&' % (k, newparams[k])  
     prestr = prestr[:-1]  
@@ -103,6 +106,7 @@ def rsaSign(data,private_key):
 def buildRequestMysign(values,private_key):
     #把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
     params,prestr = params_filter(values)
+    _logger.info('Sign Str : %s' %s(prestr))
     mysign = rsaSign(prestr,private_key) or ''
     return params,mysign
 
