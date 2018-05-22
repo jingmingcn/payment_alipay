@@ -14,7 +14,7 @@ import types
 try:
     from Crypto.PublicKey import RSA
     from Crypto.Signature import PKCS1_v1_5
-    from Crypto.Hash import SHA
+    from Crypto.Hash import SHA256
 except:
     pass
 
@@ -90,7 +90,7 @@ def createLinkstringUrlencode(values):
 """
 def rsaSign(data,private_key):
     key = RSA.importKey(private_key)
-    hash_obj = SHA.new(data.encode('utf-8'))
+    hash_obj = SHA256.new(data.encode('utf-8'))
     signer = PKCS1_v1_5.new(key)
     d = b64encode(signer.sign(hash_obj))
     return d
@@ -117,7 +117,7 @@ def buildRequestMysign(values,private_key):
 
 def rsaVerify(data,public_key,sign):
     rsakey = RSA.importKey(public_key)
-    res = SHA.new(data)
+    res = SHA256.new(data)
     verifier = PKCS1_v1_5.new(rsakey)
     return verifier.verify(res,b64decode(sign))
 
