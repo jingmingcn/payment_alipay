@@ -50,14 +50,14 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
 def params_filter(params):  
     ks = sorted(params)
     newparams = {}  
-    prestr = "" 
+    prestr = ''  
     for k in ks:  
         v = params[k]  
-        k = str(smart_str(k))
+        #k = smart_str(k)  
         if k not in ('sign','') and v != '':  
-            newparams[k] = str(smart_str(v))  
-            prestr += k + "=" + newparams[k] + "&"
-    prestr = prestr[:-1]
+            #newparams[k] = smart_str(v)  
+            prestr += '%s=%s&' % (k, v)  
+    prestr = prestr[:-1]  
     return newparams, prestr
 
 """
