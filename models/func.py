@@ -133,7 +133,7 @@ def aesEncrypt(data,key):
     mode = AES.MODE_CBC
     aes_key = hashlib.sha256(key.encode()).digest()
     cipher = AES.new(aes_key,mode,IV=IV)
-    return b64encode(IV + cipher.encrypt(pad(data,bs))).decode('utf-8')
+    return b64encode(cipher.encrypt(pad(data,bs)))
 
 def pad(s, bs):
     return s + (bs - len(s) % bs) * chr(bs - len(s) % bs)
