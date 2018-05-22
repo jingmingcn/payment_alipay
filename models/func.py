@@ -132,4 +132,4 @@ def aesEncrypt(data,key):
     mode = AES.MODE_CBC
     aes_key = hashlib.sha256(key.encode()).digest()
     cipher = AES.new(aes_key,mode,IV=IV)
-    return base64.b64encode(iv + cipher.encrypt(data)).decode('utf-8')
+    return b64encode(iv + cipher.encrypt(data)).decode('utf-8')
