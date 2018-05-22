@@ -29,7 +29,7 @@ class AcquirerAlipay(models.Model):
     
     alipay_app_id = fields.Char('Alipay APP ID',groups='base.group_user')
     alipay_private_key = fields.Text('Alipay Private KEY',groups='base.group_user')
-    #alipay_public_key = fields.Text('Alipay Public key',groups='base.group_user')
+    alipay_public_key = fields.Text('Alipay Public key',groups='base.group_user')
     #alipay_sign_type = fields.Selection([('RSA','RSA'),('RSA2','RSA2')],groups='base.gruop_user')
     alipay_transport = fields.Selection([
         ('https','HTTPS'),
