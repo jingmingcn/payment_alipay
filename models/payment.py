@@ -4,6 +4,7 @@ import json
 import logging
 import datetime
 import time
+import os
 from urllib.parse import urlparse
 from urllib.parse import urljoin
 from . import func
@@ -29,7 +30,7 @@ class AcquirerAlipay(models.Model):
     alipay_app_id = fields.Char('Alipay APP ID',groups='base.group_user')
     alipay_private_key = fields.Text('Alipay Private KEY',groups='base.group_user')
     alipay_public_key = fields.Text('Alipay Public key',groups='base.group_user')
-    alipay_sign_type = fields.Char('Alipay Sign Type',groups='base.gruop_user')
+    alipay_sign_type = fields.Selection([('RSA','RSA'),('RSA2','RSA2')],groups='base.gruop_user')
     alipay_transport = fields.Selection([
         ('https','HTTPS'),
         ('http','HTTP')],groups='base.group_user')
@@ -103,18 +104,19 @@ class AcquirerAlipay(models.Model):
         biz_content['subject'] = '%s: %s' % (self.company_id.name, values['reference'])
         biz_content['body'] = '%s: %s' % (self.company_id.name, values['reference'])
 
-        biz_content_sign = func.rsaSign(json.dumps(biz_content),open('/rsa_private_key.pem','r',encoding='utf-8').read())
+        biz_content_sign = func.rsaSign(json.dumps(biz_content),self.alipay_private_key)
 
         alipay_tx_values.update({'biz_content':biz_content_sign})
         
         subkey = ['app_id','method','version','charset','sign_type','timestamp','biz_content','return_url','notify_url']
         need_sign = {key:alipay_tx_values[key] for key in subkey}
-        params,sign = func.buildRequestMysign(need_sign, open('/rsa_private_key.pem','r',encoding='utf-8').read())
+        params,sign = func.buildRequestMysign(need_sign, self.alipay_private_key)
         alipay_tx_values.update({
             'sign':sign,
             })
 
-        #_logger.info('script_dir : %s' %(os.path.dirname(__file__)))
+        _logger.info('script_dir : %s' %(os.path.dirname(__file__)))
+
         return alipay_tx_values
 
     @api.multi
