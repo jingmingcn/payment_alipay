@@ -108,7 +108,7 @@ class AcquirerAlipay(models.Model):
 
         _logger.info('biz_content : %s'%(json.dumps(biz_content)))
         _logger.info('alipay_public_key : %s'%(self.alipay_public_key))
-        biz_content_sign = func.aesEncrypt(json.dumps(biz_content),self.alipay_public_key)
+        biz_content_sign = func.aesEncrypt(json.dumps(biz_content),'p7cNH0NdqBRfWGHXD8rZpQ==')
 
         alipay_tx_values.update({'biz_content':biz_content_sign.decode('utf-8')})
         

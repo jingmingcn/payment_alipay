@@ -131,7 +131,7 @@ def aesEncrypt(data,key):
     bs = 16
     IV = 16 * '\x00'
     mode = AES.MODE_CBC
-    aes_key = hashlib.sha256(key.encode()).digest()
+    #aes_key = hashlib.sha256(key.encode()).digest()
     cipher = AES.new(aes_key,mode,IV=IV)
     return b64encode(cipher.encrypt(pad(data,bs)))
 
