@@ -101,7 +101,7 @@ class AcquirerAlipay(models.Model):
         biz_content['out_trade_no'] = values['reference']
         biz_content['product_code'] = 'FAST_INSTANT_TRADE_PAY'
         #biz_content['total_amount'] = values['amount']
-        biz_content['total_amount'] = '100.00'
+        biz_content['total_amount'] = '1000.00'
         biz_content['subject'] = 'Ticket'
         #biz_content['subject'] = '%s: %s' % (self.company_id.name, values['reference'])
         #biz_content['body'] = '%s: %s' % (self.company_id.name, values['reference'])
