@@ -3,6 +3,7 @@
     <data noupdate="1">
         <template id="alipay_form">
             <div>
+                <input type="hidden" name="data_set" t-att-data-action-url="tx_url" data-remove-me=""/>
                 <input type="hidden" name="app_id" t-att-value="app_id"/>
                 <input type="hidden" name="method" t-att-value="method"/>
                 <input type="hidden" name="version" t-att-value="version"/>
