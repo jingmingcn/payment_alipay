@@ -23,7 +23,8 @@ _logger = logging.getLogger(__name__)
 class AcquirerAlipay(models.Model):
     _inherit = 'payment.acquirer'
 
-    provider = fields.Selection(selection_add=[('alipay', 'Alipay')])
+    provider = fields.Selection(selection_add=[('alipay', 'Alipay')], string='Provider',
+        default='alipay', required=True)
     
     alipay_app_id = fields.Char('Alipay APP ID',groups='base.group_user')
     alipay_app_private_key = fields.Text('Alipay APP Private KEY',groups='base.group_user')
