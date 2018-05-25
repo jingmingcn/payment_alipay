@@ -97,7 +97,7 @@ class AcquirerAlipay(models.Model):
             'biz_content':''
         })
 
-        _logger.info(json.dumps(alipay_tx_values))
+        _logger.info(alipay_tx_values)
 
         biz_content = {}
         biz_content['out_trade_no'] = values['reference']
