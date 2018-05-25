@@ -12,6 +12,8 @@ from odoo import http
 from odoo.addons.payment.models.payment_acquirer import ValidationError
 from odoo.http import request
 
+from . import func
+
 _logger = logging.getLogger(__name__)
 
 
