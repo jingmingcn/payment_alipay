@@ -30,11 +30,7 @@ class AcquirerAlipay(models.Model):
     alipay_app_id = fields.Char('Alipay APP ID',groups='base.group_user')
     alipay_app_private_key = fields.Text('Alipay APP Private KEY',groups='base.group_user')
     alipay_official_public_key = fields.Text('Alipay Official Public key',groups='base.group_user')
-    alipay_transport = fields.Selection([
-        ('https','HTTPS'),
-        ('http','HTTP')],groups='base.group_user')
     
-
     @api.model
     def _get_alipay_urls(self, environment):
         """ Alipay URLS """
