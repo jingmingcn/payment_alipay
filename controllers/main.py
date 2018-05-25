@@ -23,7 +23,7 @@ class AlipayController(http.Controller):
     ALIPAY_PUBLIC_KEY_PATH = 'rsa_public_key.pem'
 
     def _get_return_url(self, **post):
-        """ Extract the return URL from the data coming from paypal. """
+        """ Extract the return URL from the data coming from alipal. """
         return_url = post.pop('return_url', '')
         if not return_url:
             custom = json.loads(urls.url_unquote_plus(post.pop('custom', False) or post.pop('cm', False) or '{}'))
@@ -48,8 +48,8 @@ class AlipayController(http.Controller):
         content = content[:-1]
         content = content.encode("utf-8")
         isSign = False
-        if sign_type.upper() == "RSA":
-            isSign = func.rsaVerify(content,open(self.ALIPAY_PUBLIC_KEY_PATH,'r').read(),sign)
+        if sign_type.upper() == "RSA2":
+            isSign = func.rsaVerify(content,self.alipay_official_public_key,sign)
         return isSign
         
 
@@ -100,7 +100,7 @@ class AlipayController(http.Controller):
                 return False
 
 
-    @http.route('/payment/alipay/ipn/', type='http', auth="none", methods=['POST'], csrf=False)
+    @http.route('/payment/alipay/ipn/', type='https', auth="none", methods=['POST'], csrf=False)
     def alipay_ipn(self, **post):
         """ Alipay IPN. """
         _logger.info('Beginning Alipay IPN form_feedback with post data %s', pprint.pformat(post))  # debug
@@ -109,7 +109,7 @@ class AlipayController(http.Controller):
         else:
             return 'fail'
 
-    @http.route('/payment/alipay/dpn', type='http', auth="none", methods=['POST', 'GET'], csrf=False)
+    @http.route('/payment/alipay/dpn', type='https', auth="none", methods=['POST', 'GET'], csrf=False)
     def alipay_dpn(self, **post):
         """ Alipay RETURN """
         _logger.info('Beginning Alipay DPN form_feedback with post data %s', pprint.pformat(post))  # debug
