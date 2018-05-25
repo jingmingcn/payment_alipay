@@ -46,7 +46,7 @@ class AlipayController(http.Controller):
                     content = content + key + "=" + post[key] + "&"
         content = content[:-1]
         content = content.encode(charset)
-        alipay_official_public_key = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArr28fF5azd5/PQsodz30xSpbusl18rVjCd6+rFsn3k41FeJkUio/Dt/oM2g54lxiTBKCKhXqqbAxDvLtH9NjUe6GMrPBejCf2+HnCOQGNNNeKqnj3WDbl6oY8qZBxWDXikBFGToxt6kNSsYVJcN0kUuvptLbfoDI1eS8Gi2MOg+BCkUv9cEKbMddj4DwwAL1oTNpO3tt3KgL9gzzRjNCFkgGZYT8HC07Uxtwnrzpfd3iXhBcUJquZ4YlUIxbjnzH93qdllfyd7PgUJnuoFzf6rToOcgz1mXVA8hku0cSfy8k1Kowzp/SQKy4aFicIXhorM0RY3H8xAhT2n+VXU6wJwIDAQAB'
+        alipay_official_public_key = '-----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArr28fF5azd5/PQsodz30xSpbusl18rVjCd6+rFsn3k41FeJkUio/Dt/oM2g54lxiTBKCKhXqqbAxDvLtH9NjUe6GMrPBejCf2+HnCOQGNNNeKqnj3WDbl6oY8qZBxWDXikBFGToxt6kNSsYVJcN0kUuvptLbfoDI1eS8Gi2MOg+BCkUv9cEKbMddj4DwwAL1oTNpO3tt3KgL9gzzRjNCFkgGZYT8HC07Uxtwnrzpfd3iXhBcUJquZ4YlUIxbjnzH93qdllfyd7PgUJnuoFzf6rToOcgz1mXVA8hku0cSfy8k1Kowzp/SQKy4aFicIXhorM0RY3H8xAhT2n+VXU6wJwIDAQAB -----END PUBLIC KEY-----'
         isSign = False
         if sign_type.upper() == "RSA2":
             isSign = func.rsaVerify(content,alipay_official_public_key,sign)
