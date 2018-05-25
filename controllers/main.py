@@ -12,8 +12,8 @@ from odoo import http
 from odoo.addons.payment.models.payment_acquirer import ValidationError
 from odoo.http import request
 
-from ..models import func
-from ..models.payment import AcquirerAlipay
+from odoo.addons.payment_alipay.models import func
+from odoo.addons.payment_alipay.models.payment import AcquirerAlipay
 
 _logger = logging.getLogger(__name__)
 
