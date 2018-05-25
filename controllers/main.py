@@ -49,7 +49,6 @@ class AlipayController(http.Controller):
         content = content[:-1]
         content = content.encode(charset)
         isSign = False
-        _logger.info('payment.AcquirerAlipay.alipay_official_public_key : %s',payment.AcquirerAlipay.alipay_official_public_key)
         if sign_type.upper() == "RSA2":
             isSign = func.rsaVerify(content,payment.AcquirerAlipay.alipay_official_public_key,sign)
         return isSign
@@ -80,7 +79,7 @@ class AlipayController(http.Controller):
     def alipay_dpn(self, **post):
         """ Alipay RETURN """
         _logger.info('Beginning Alipay DPN form_feedback with post data %s', pprint.pformat(post))  # debug
-        
+        _logger.info('payment.AcquirerAlipay.alipay_official_public_key : %s', payment.AcquirerAlipay.alipay_official_public_key)
         if self.verify_data(**post):
             return "验签成功"
         else:
