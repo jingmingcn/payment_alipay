@@ -46,7 +46,7 @@ class AlipayController(http.Controller):
                     content = content + key + "=" + post[key] + "&"
         content = content[:-1]
         content = content.encode(charset)
-        acquirers = request.env['payment.acquirer'].search(['provider','=','alipay'])
+        acquirers = request.env['payment.acquirer'].search(['provider = alipay'])
         _logger.info(acquirers.alipay_official_public_key)
         isSign = False
         if sign_type.upper() == "RSA2":
