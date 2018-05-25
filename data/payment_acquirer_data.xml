@@ -11,7 +11,7 @@
             <field name="environment">prod</field>
             <field name="pre_msg"><![CDATA[<p>You will be redirected to the Alipay website after clicking on the payment button.</p>]]></field>
             
-            <!--<field name="alipay_partner">dummy</field>-->
+            
             <field name="alipay_app_id"></field>
             <field name="alipay_app_private_key"></field>
             <field name="alipay_official_public_key"></field>

@@ -77,20 +77,11 @@ class AcquirerAlipay(models.Model):
         alipay_tx_values.update({
             #basic parameters
             'method': 'alipay.trade.page.pay',
-            #'partner': self.alipay_partner,
             'charset': 'utf-8',
             'sign_type': 'RSA2',
             'return_url': '%s' % urljoin(base_url, AlipayController._return_url),
             'notify_url': '%s' % urljoin(base_url, AlipayController._notify_url),
-            #buiness parameters
-            #'out_trade_no': values['reference'],
-            #'subject': '%s: %s' % (self.company_id.name, values['reference']),
-            #'total_amount': values['amount'],
             'app_id': self.alipay_app_id,
-            #'seller_email': self.alipay_app_id,
-            #'seller_account_name': self.alipay_app_id,
-            #'body':'',
-            #'product_code':'FAST_INSTANT_TRADE_PAY',
             'version':'1.0',
             'timestamp': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             'biz_content':''
