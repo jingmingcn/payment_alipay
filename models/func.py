@@ -95,7 +95,7 @@ def createLinkstringUrlencode(values):
 """
 def rsaSign(data,private_key):
     key = RSA.importKey(private_key)
-    hash_obj = SHA256.new(data.encode(charset))
+    hash_obj = SHA256.new(data.encode())
     signer = PKCS1_v1_5.new(key)
     d = b64encode(signer.sign(hash_obj))
     return d

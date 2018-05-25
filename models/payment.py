@@ -147,19 +147,20 @@ class TxAlipay(models.Model):
 
     @api.multi
     def _alipay_form_validate(self, data):
-        status = data.get('trade_status')
+        
         res = {
             'acquirer_reference': data.get('out_trade_no'),
-            'alipay_txn_type': data.get('payment_type'),
-            'acquirer_reference':data.get('trade_no'),
-            'partner_reference':data.get('buyer_id')
+            'alipay_reference':data.get('trade_no'),
+            'partner_reference':data.get('seller_id')
         }
-        if status in ['TRADE_FINISHED', 'TRADE_SUCCESS']:
-            _logger.info('Validated alipay payment for tx %s: set as done' % (self.reference))
-            res.update(state='done', date_validate=data.get('gmt_payment', fields.datetime.now()))
-            return self.write(res)
-        else:
-            error = 'Received unrecognized status for Alipay payment %s: %s, set as error' % (self.reference, status)
-            _logger.info(error)
-            res.update(state='error', state_message=error)
-            return self.write(res)
+        try:
+            # dateutil and pytz don't recognize abbreviations PDT/PST
+            tzinfos = {
+                'PST': +8 * 3600,
+                'PDT': +7 * 3600,
+            }
+            date_validate = dateutil.parser.parse(data.get('timestamp'), tzinfos=tzinfos).astimezone(pytz.utc)
+        except:
+            date_validate = fields.Datetime.now()
+        res.update(state='done', date_validate=date_validate)
+        return self.write(res)
