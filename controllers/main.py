@@ -47,7 +47,7 @@ class AlipayController(http.Controller):
         content = content[:-1]
         content = content.encode(charset)
         alipay_official_public_key = request.env['payment.acquirer'].search([('provider','=','alipay')],limit=1).alipay_official_public_key
-        
+        _logger.info(alipay_official_public_key)
         isSign = False
         if sign_type.upper() == "RSA2":
             isSign = func.rsaVerify(content,alipay_official_public_key,sign)
