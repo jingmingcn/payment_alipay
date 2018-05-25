@@ -13,10 +13,8 @@ from odoo.addons.payment.models.payment_acquirer import ValidationError
 from odoo.http import request
 
 from odoo.addons.payment_alipay.models import func
-from odoo.addons.payment_alipay.models import payment
 
 _logger = logging.getLogger(__name__)
-
 
 class AlipayController(http.Controller):
     _notify_url = '/payment/alipay/ipn/'
@@ -48,9 +46,10 @@ class AlipayController(http.Controller):
                     content = content + key + "=" + post[key] + "&"
         content = content[:-1]
         content = content.encode(charset)
+        alipay_official_public_key = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArr28fF5azd5/PQsodz30xSpbusl18rVjCd6+rFsn3k41FeJkUio/Dt/oM2g54lxiTBKCKhXqqbAxDvLtH9NjUe6GMrPBejCf2+HnCOQGNNNeKqnj3WDbl6oY8qZBxWDXikBFGToxt6kNSsYVJcN0kUuvptLbfoDI1eS8Gi2MOg+BCkUv9cEKbMddj4DwwAL1oTNpO3tt3KgL9gzzRjNCFkgGZYT8HC07Uxtwnrzpfd3iXhBcUJquZ4YlUIxbjnzH93qdllfyd7PgUJnuoFzf6rToOcgz1mXVA8hku0cSfy8k1Kowzp/SQKy4aFicIXhorM0RY3H8xAhT2n+VXU6wJwIDAQAB'
         isSign = False
         if sign_type.upper() == "RSA2":
-            isSign = func.rsaVerify(content,payment.AcquirerAlipay.alipay_official_public_key,sign)
+            isSign = func.rsaVerify(content,alipay_official_public_key,sign)
         return isSign
         
 
@@ -79,7 +78,7 @@ class AlipayController(http.Controller):
     def alipay_dpn(self, **post):
         """ Alipay RETURN """
         _logger.info('Beginning Alipay DPN form_feedback with post data %s', pprint.pformat(post))  # debug
-        _logger.info('payment.AcquirerAlipay.alipay_official_public_key : %s', payment.AcquirerAlipay.alipay_official_public_key)
+        
         if self.verify_data(**post):
             return "验签成功"
         else:
