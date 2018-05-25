@@ -12,7 +12,7 @@ from odoo import http
 from odoo.addons.payment.models.payment_acquirer import ValidationError
 from odoo.http import request
 
-from . import func
+from ..models import func
 
 _logger = logging.getLogger(__name__)
 
@@ -20,8 +20,6 @@ _logger = logging.getLogger(__name__)
 class AlipayController(http.Controller):
     _notify_url = '/payment/alipay/ipn/'
     _return_url = '/payment/alipay/dpn/'
-    https_verify_url = 'https://mapi.alipay.com/gateway.do?service=notify_verify&'
-    http_verify_url = 'http://notify.alipay.com/trade/notify_query.do?'
 
     def _get_return_url(self, **post):
         """ Extract the return URL from the data coming from alipay. """
