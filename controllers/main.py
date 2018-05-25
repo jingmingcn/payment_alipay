@@ -13,6 +13,7 @@ from odoo.addons.payment.models.payment_acquirer import ValidationError
 from odoo.http import request
 
 from ..models import func
+from ..models.payment import AcquirerAlipay
 
 _logger = logging.getLogger(__name__)
 
@@ -49,7 +50,7 @@ class AlipayController(http.Controller):
         content = content.encode(charset)
         isSign = False
         if sign_type.upper() == "RSA2":
-            isSign = func.rsaVerify(content,self.alipay_official_public_key,sign)
+            isSign = func.rsaVerify(content,AcquirerAlipay.alipay_official_public_key,sign)
         return isSign
         
 
