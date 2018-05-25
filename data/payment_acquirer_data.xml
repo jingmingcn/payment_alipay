@@ -13,8 +13,8 @@
             
             <!--<field name="alipay_partner">dummy</field>-->
             <field name="alipay_app_id"></field>
-            <field name="alipay_private_key"></field>
-            <field name="alipay_public_key"></field>
+            <field name="alipay_app_private_key"></field>
+            <field name="alipay_official_public_key"></field>
             <field name="alipay_sign_type"></field>
         </record>
 
