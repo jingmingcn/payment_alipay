@@ -93,9 +93,7 @@ def createLinkstringUrlencode(values):
  * @param private_key 商户私钥字符串
  * return 签名结果
 """
-def rsaSign(data,private_key,charset):
-    if not charset:
-        charset = 'utf-8'
+def rsaSign(data,private_key):
     key = RSA.importKey(private_key)
     hash_obj = SHA256.new(data.encode(charset))
     signer = PKCS1_v1_5.new(key)
@@ -124,6 +122,7 @@ def buildRequestMysign(values,private_key):
 """
 
 def rsaVerify(data,public_key,sign):
+    _logger.info(public_key)
     rsakey = RSA.importKey(public_key)
     res = SHA256.new(data)
     verifier = PKCS1_v1_5.new(rsakey)
