@@ -64,7 +64,7 @@ class AlipayController(http.Controller):
                 return False
 
 
-    @http.route('/payment/alipay/ipn/', type='https', auth="none", methods=['POST'], csrf=False)
+    @http.route('/payment/alipay/ipn/', type='http', auth="none", methods=['POST'], csrf=False)
     def alipay_ipn(self, **post):
         """ Alipay IPN. """
         _logger.info('Beginning Alipay IPN form_feedback with post data %s', pprint.pformat(post))  # debug
@@ -73,7 +73,7 @@ class AlipayController(http.Controller):
         else:
             return 'fail'
 
-    @http.route('/payment/alipay/dpn', type='https', auth="none", methods=['POST', 'GET'], csrf=False)
+    @http.route('/payment/alipay/dpn', type='http', auth="none", methods=['POST', 'GET'], csrf=False)
     def alipay_dpn(self, **post):
         """ Alipay RETURN """
         _logger.info('Beginning Alipay DPN form_feedback with post data %s', pprint.pformat(post))  # debug

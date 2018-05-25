@@ -18,9 +18,7 @@ from odoo.addons.payment.models.payment_acquirer import ValidationError
 from odoo.addons.payment_alipay.controllers.main import AlipayController
 from odoo.tools.float_utils import float_compare
 
-
 _logger = logging.getLogger(__name__)
-
 
 class AcquirerAlipay(models.Model):
     _inherit = 'payment.acquirer'
